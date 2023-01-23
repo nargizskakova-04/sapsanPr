@@ -1,0 +1,181 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
+public class Main {
+    public static void main(String[] args) {
+        Person Jack = new Employee("Jack", "White", "Doctor", 200000);
+        Person Karl = new Student("Karl", "Marx", 3.0);
+        Person Gus = new Student("Gus", "Smith", 2.0);
+
+        ArrayList<Person> people= new ArrayList<>();
+        people.add(Jack);
+        people.add(Karl);
+        people.add(Gus);
+        Collections.sort(people);
+        printData(people);
+
+
+    }
+
+    public static void printData(Iterable<Person> people){
+        for(Person person : people){
+            System.out.println(person.toString() + " earns " + person.getPaymentAmount() + " tenge");
+        }
+    }
+
+
+
+}
+public abstract class Person implements Payable, Comparable<Person>{
+    private int id;
+    private static int idg = 1;
+    private String name;
+    private String surname;
+
+
+
+    public Person(){
+
+    }
+
+    public Person(String name, String surname){
+        this.id = idg++;
+        this.name = name;
+        this.surname = surname;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+    public String getName(){
+        return name;
+    }
+    public void setSurname(String Surname){
+        this.surname = surname;
+    }
+    public String getSurname(){
+        return surname;
+    }
+    public int getId(){
+        return this.id;
+    }
+    public String toString(){
+        return (getId() + ". " + name + " " + surname);
+    }
+
+    public String getPosition(){
+        return "Student";
+    }
+
+    public double getPaymentAmount(){
+        return getPaymentAmount();
+    }
+
+}
+public class Employee extends Person{
+
+    private String position;
+    private double salary;
+
+    public Employee(String name,String surname, String position, double salary) {
+        super(name, surname);
+        this.position = position;
+        this.salary = salary;
+    }
+    public Employee(){
+
+    }
+
+    public String getPosition(){
+        return position;
+    }
+    public void setPosition(String position){
+        this.position = position;
+    }
+
+    public double getSalary(){
+        return salary;
+    }
+    public void setSalary(double salary){
+        this.salary = salary;
+    }
+
+    @Override
+    public String toString(){
+        //super.toString();
+        return ("Employee: " + getId() + ". " + getName() + " " + getSurname());
+    }
+    @Override
+    public double getPaymentAmount() {
+        return getSalary();
+    }
+
+
+    public int compareTo(Person person) {
+        if(this.getPaymentAmount() > person.getPaymentAmount()){
+            return 1;
+        }
+        else{
+            if(this.getPaymentAmount() < person.getPaymentAmount()){
+                return -1;
+            }
+            else{
+                return 0;
+            }
+        }
+    }
+}
+public class Student extends Person{
+
+    private double gpa;
+
+    @Override
+    public String toString(){
+        //super.toString();
+        return("Student: " + getId() + ". " + getName() + " " + getSurname());
+    }
+
+    public Student(){
+
+    }
+    public Student(String name,String surname,double gpa){
+        super(name, surname);
+        this.gpa = gpa;
+    }
+    public void setGpa(){
+        this.gpa = gpa;
+    }
+    public double getGpa() {
+        return gpa;
+    }
+    @Override
+    public double getPaymentAmount() {
+        double stipendia = 36600;
+        if(getGpa()>2.67){
+            stipendia =36600;
+        }
+        else{
+            stipendia =0;
+        }
+        return stipendia;
+    }
+
+
+    public int compareTo(Person person) {
+        if(this.getPaymentAmount() > person.getPaymentAmount()){
+            return 1;
+        }
+        else{
+            if(this.getPaymentAmount() < person.getPaymentAmount()){
+                return -1;
+            }
+            else{
+                return 0;
+            }
+        }
+    }
+}
+public interface Payable {
+    double getPaymentAmount();
+}
